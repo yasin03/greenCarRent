@@ -1,15 +1,14 @@
 package com.greenrent.exeption;
 
-
 //@ResponseStatus(HttpStatus.NOT_FOUND)
-public class ResourceNotFoundExeption extends RuntimeException {
+public class BadRequestException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ResourceNotFoundExeption (String message) {
+	public BadRequestException (String message) {
 		super(message); 
 	}
 }
