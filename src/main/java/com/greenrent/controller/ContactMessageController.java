@@ -80,6 +80,7 @@ public class ContactMessageController {
 	public ResponseEntity<Map<String, String>> updateMessage(@PathVariable Long id,
 			@Valid @RequestBody ContactMessage contactMessage) {
 		contactMessageService.updateContactMessage(id, contactMessage);
+		
 		Map<String, String> map = new HashMap<>();
 		map.put("message", "Contact message succesfully updated");
 		map.put("status", "true");
