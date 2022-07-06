@@ -1,6 +1,7 @@
 package com.greenrent.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.greenrent.domain.Role;
 import com.greenrent.domain.User;
 import com.greenrent.domain.enums.RoleType;
-import com.greenrent.dto.RegisterRequest;
+import com.greenrent.dto.UserDTO;
+import com.greenrent.dto.mapper.UserMapper;
+import com.greenrent.dto.request.RegisterRequest;
 import com.greenrent.exeption.ConflictException;
 import com.greenrent.exeption.ResourceNotFoundExeption;
 import com.greenrent.exeption.message.ErrorMessage;
@@ -29,6 +32,8 @@ public class UserService {
 	
 	private PasswordEncoder passwordEncoder;
 	
+	private UserMapper userMapper;
+	
 	
 	public void register(RegisterRequest registerRequest) {
 		
@@ -39,7 +44,7 @@ public class UserService {
 		String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
 		
 		Role role = roleRepository.findByName(RoleType.ROLE_CUSTOMER).orElseThrow(()-> new 
-				ResourceNotFoundExeption(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE, RoleType.ROLE_CUSTOMER.name())));
+				ResourceNotFoundExeption(String.format(ErrorMessage.ROLE_NOT_FOUND_MESSAGE, RoleType.ROLE_CUSTOMER.name())));
 		
 		Set<Role> roles = new HashSet<>();
 		roles.add(role);
@@ -57,4 +62,13 @@ public class UserService {
 		userRepository.save(user);
 	}
 	
+	public List<UserDTO> getAllUsers(){
+		List<User> users= userRepository.findAll();
+		return userMapper.map(users);
+	}
+	
+	public UserDTO findById(Long id) {
+		User user =  userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundExeption(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE, id)));
+		return userMapper.userToUserDTO(user);
+	}
 }
