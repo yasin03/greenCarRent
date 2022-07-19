@@ -37,13 +37,12 @@ public class UserDTO {
 	private Set<String> roles;
 	
 	
-	
 	public void setRoles(Set<Role> roles) {
 		Set<String> roleStr = new HashSet<>();
 		roles.forEach(r->{
 			if(r.getName().equals(RoleType.ROLE_ADMIN))
 			roleStr.add("Adminitrator");
-			else {roleStr.add("Customer");}		
+			else {roleStr.add("Customer");}
 		});
 		this.roles = roleStr;
 	}
