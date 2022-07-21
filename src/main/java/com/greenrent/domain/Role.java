@@ -31,6 +31,13 @@ public class Role {
 	@Enumerated(EnumType.STRING)	
 	@Column(length = 20)
 	private RoleType name;
+
+	@Override
+	public String toString() {
+		return "Role [name=" + name + "]";
+	}
+	
+	
 	
 	
 }

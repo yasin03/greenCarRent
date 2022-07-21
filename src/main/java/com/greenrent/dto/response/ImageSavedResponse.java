@@ -15,5 +15,6 @@ public class ImageSavedResponse extends GRResponse {
 	
 	public ImageSavedResponse (String imageId, String message, boolean success) {
 		super(success, message);
+		this.imageId=imageId;
 	}
 }
