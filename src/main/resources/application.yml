@@ -19,6 +19,13 @@ spring:
    database-platform: org.hibernate.dialect.PostgreSQLDialect
    hibernate:
       ddl-auto: update
+   properties:
+      format-sql: true
+      #hibernate:
+        #enable_lazy_load_no_trans: true
+        
+   # open-in-view değeri default olarak true geliyor. İlişki lazy yapılsa dahi view render edilene kadar veya json datası oluşana kadar transaction açık kalıyor.
+   # open-in-view : false
       
   servlet:
     multipart:
@@ -26,8 +33,8 @@ spring:
       max-request-size: 2MB
         
 
-greenrent:
-  app:
+greenrent: 
+  app: 
     jwtSecret: greenRent@12
     jwtExpressionMs: 86400000
 
@@ -40,5 +47,9 @@ logging:
    '[org.springframework.web]': INFO
    '[org.hibernate]': INFO
    '[com.greenrent]': DEBUG
-   
 
+info:
+ application:
+  name: 'GreenRent Backend App.'
+  description: 'This is GreenRent Backend app dev by Green Rent Dev Team'
+  version: '@project.version@'

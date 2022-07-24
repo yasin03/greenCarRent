@@ -18,6 +18,7 @@ import com.greenrent.exeption.ResourceNotFoundExeption;
 import com.greenrent.exeption.message.ErrorMessage;
 import com.greenrent.repository.CarRepository;
 import com.greenrent.repository.ImageFileRepository;
+import com.greenrent.repository.ReservationRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -30,6 +31,7 @@ public class CarService {
 	private ImageFileRepository imageFileRepository;
 
 	private CarMapper carMapper;
+	private ReservationRepository reservationRepository;
 
 	// http://localhost:8080/car/visitors/all
 	@Transactional(readOnly = true)
@@ -100,6 +102,12 @@ public class CarService {
 		Car foundCar = carRepository.findById(id).orElseThrow(()->new 
 				ResourceNotFoundExeption(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE, id)));
 	
+		boolean exists=  reservationRepository.existsByCarId(foundCar);
+		if(exists) {
+			throw new BadRequestException(ErrorMessage.CAR_USED_BY_RESERVATION_MESSAGE);
+		}
+		
+		
 		if(foundCar.getBuiltIn()) {
 			throw new BadRequestException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
 		}

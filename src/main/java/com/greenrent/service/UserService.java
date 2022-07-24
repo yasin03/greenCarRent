@@ -27,6 +27,7 @@ import com.greenrent.exeption.BadRequestException;
 import com.greenrent.exeption.ConflictException;
 import com.greenrent.exeption.ResourceNotFoundExeption;
 import com.greenrent.exeption.message.ErrorMessage;
+import com.greenrent.repository.ReservationRepository;
 import com.greenrent.repository.RoleRepository;
 import com.greenrent.repository.UserRepository;
 
@@ -43,6 +44,8 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 
 	private UserMapper userMapper;
+	
+	private ReservationRepository reservationRepository;
 
 	public void register(RegisterRequest registerRequest) {
 
@@ -165,6 +168,11 @@ public class UserService {
     public void removeById(Long id) {
     	User user= userRepository.findById(id).orElseThrow(()-> 
     	new ResourceNotFoundExeption(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE, id)));
+    	
+		boolean exists=  reservationRepository.existsByUserId(user);
+		if(exists) {
+			throw new BadRequestException(ErrorMessage.USER_USED_BY_RESERVATION_MESSAGE);
+		}
     	
     	if(user.getBuiltIn()) {
     		throw new BadRequestException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
